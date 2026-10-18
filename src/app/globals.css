@@ -1,0 +1,226 @@
+@import "tailwindcss";
+
+/* Light theme with gold accents. Areas that sit on black (header, hero video,
+   footer, admin) add the `dark-zone` class, which swaps these tokens for the
+   original dark palette so the chrome + gold logo looks exactly as designed. */
+@theme {
+  --color-ink: #f7f6f2;
+  --color-surface: #ffffff;
+  --color-surface-2: #f3f1ec;
+  --color-surface-3: #e8e5de;
+  --color-line: #e3dfd6;
+  --color-text: #17171c;
+  --color-muted: #585862;
+  --color-subtle: #8a8a93;
+  --color-gold: #f5c518;
+  --color-gold-light: #ffe066;
+  --color-gold-deep: #d9a400;
+  /* gold for TEXT: deep enough to read on white, bright inside .dark-zone */
+  --color-gold-ink: #8f6b00;
+  --color-success: #15803d;
+  --color-danger: #dc2626;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-russo), var(--font-inter), ui-sans-serif, sans-serif;
+
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-sheen: sheen 6s ease-in-out infinite;
+  --animate-pop: pop 0.14s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes sheen {
+    0%, 60% { transform: translateX(-120%) skewX(-20deg); }
+    100% { transform: translateX(220%) skewX(-20deg); }
+  }
+}
+
+@layer base {
+  :root {
+    --chrome-text: linear-gradient(180deg, #3a3e46 0%, #1d1f24 48%, #4b515a 52%, #24262c 100%);
+    --gold-text: linear-gradient(180deg, #d9a400 0%, #b48300 55%, #8f6600 100%);
+    --card-bg: var(--color-surface);
+    --card-shadow: 0 1px 2px rgb(23 23 28 / 0.04), 0 12px 32px -16px rgb(23 23 28 / 0.14);
+    --header-h: 5.75rem;
+  }
+  @media (min-width: 1024px) {
+    :root { --header-h: 6.75rem; }
+  }
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h) + 1rem);
+  }
+  body {
+    background: var(--color-ink);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--color-gold);
+    color: #000;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+  input, select, textarea, button { font: inherit; }
+}
+
+@layer components {
+  .dark-zone {
+    --color-ink: #050505;
+    --color-surface: #111113;
+    --color-surface-2: #1a1a1d;
+    --color-surface-3: #242428;
+    --color-line: #2a2a2f;
+    --color-text: #f2f2f0;
+    --color-muted: #a3a3aa;
+    --color-subtle: #6b6b72;
+    --color-gold-ink: #f5c518;
+    --color-success: #3ccf91;
+    --color-danger: #ff5a5f;
+    --chrome-text: linear-gradient(180deg, #ffffff 0%, #e6e9ec 38%, #8f98a3 52%, #d7dce1 70%, #f4f6f8 100%);
+    --gold-text: linear-gradient(180deg, #fff3a8 0%, #ffd23a 40%, #f5c518 60%, #c99400 100%);
+    --card-bg: linear-gradient(180deg, var(--color-surface-2), var(--color-surface));
+    --card-shadow: none;
+    color-scheme: dark;
+    color: var(--color-text);
+  }
+
+  /* Chrome lettering like "EMPIRE" in the logo (gunmetal on light backgrounds) */
+  .text-chrome {
+    background: var(--chrome-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* Gold lettering like "AUTO GROUP" */
+  .text-gold-grad {
+    background: var(--gold-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.5rem;
+    padding: 0.8rem 1.4rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+    transition: transform 0.15s, background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
+    white-space: nowrap;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: 0.6; pointer-events: none; }
+  .btn-gold {
+    background: linear-gradient(180deg, var(--color-gold-light), var(--color-gold) 45%, var(--color-gold-deep));
+    color: #0a0a0a;
+    box-shadow: 0 8px 24px -10px rgb(245 197 24 / 0.6);
+  }
+  .btn-gold:hover { box-shadow: 0 10px 30px -8px rgb(245 197 24 / 0.75); filter: brightness(1.05); }
+  .btn-ghost {
+    border: 1px solid var(--color-line);
+    background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+    color: var(--color-text);
+  }
+  .btn-ghost:hover { border-color: var(--color-gold); color: var(--color-gold-ink); }
+  .btn-sm { padding: 0.5rem 0.9rem; font-size: 0.85rem; }
+
+  .input {
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-line);
+    background: var(--color-surface);
+    padding: 0.7rem 0.85rem;
+    color: var(--color-text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .input::placeholder { color: var(--color-subtle); }
+  .input:focus { outline: none; border-color: var(--color-gold); box-shadow: 0 0 0 3px rgb(245 197 24 / 0.15); }
+  select.input {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239a9aa0' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    padding-right: 2.2rem;
+  }
+  .label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .card {
+    border: 1px solid var(--color-line);
+    background: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    border-radius: 1rem;
+  }
+
+  /* —— SECTION TITLE —— with gold rules, echoing the lines in the logo */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-gold-ink);
+  }
+  .eyebrow::before, .eyebrow::after {
+    content: "";
+    height: 2px;
+    width: 2rem;
+    background: linear-gradient(90deg, transparent, var(--color-gold));
+  }
+  .eyebrow::after { background: linear-gradient(90deg, var(--color-gold), transparent); }
+
+  .gold-rule {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-gold) 20%, var(--color-gold) 80%, transparent);
+  }
+
+  .container-x {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 80rem;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 640px) { .container-x { padding-inline: 1.5rem; } }
+  @media (min-width: 1024px) { .container-x { padding-inline: 2rem; } }
+}
+
+/* Scroll-reveal (see components/site/Reveal.tsx) */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.reveal.is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* Hero video: show the still poster instead for people who prefer less motion. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-video { display: none; }
+}
