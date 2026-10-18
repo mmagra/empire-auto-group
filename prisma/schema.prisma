@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// The app passes the real database location at runtime (src/lib/db.ts), so no
+// environment variables are needed. This URL is only for local Prisma CLI use.
+datasource db {
+  provider = "sqlite"
+  url      = "file:../data/empire.db"
+}
+
+// SQLite has no native enums, so statuses are strings validated in src/lib/constants.ts.
+
+model Vehicle {
+  id            String         @id @default(cuid())
+  slug          String         @unique
+  status        String         @default("DRAFT") // DRAFT | AVAILABLE | PENDING | SOLD
+  featured      Boolean        @default(false)
+  vin           String?        @unique
+  stockNumber   String?
+  year          Int
+  make          String
+  model         String
+  trim          String?
+  bodyType      String?
+  price         Int
+  salePrice     Int?
+  mileage       Int
+  exteriorColor String?
+  interiorColor String?
+  transmission  String?
+  drivetrain    String?
+  fuelType      String?
+  engine        String?
+  features      String         @default("[]") // JSON array of strings
+  description   String?
+  soldAt        DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  photos        VehiclePhoto[]
+  leads         Lead[]
+
+  @@index([status, createdAt])
+  @@index([make, model])
+}
+
+model VehiclePhoto {
+  id        String   @id @default(cuid())
+  vehicleId String
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  filename  String // base name; files are <filename>-lg.webp and <filename>-sm.webp
+  sortOrder Int      @default(0)
+  width     Int
+  height    Int
+  createdAt DateTime @default(now())
+
+  @@index([vehicleId, sortOrder])
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  type      String // CONTACT | VEHICLE_INQUIRY | TEST_DRIVE | TRADE_IN | SERVICE
+  name      String
+  phone     String?
+  email     String?
+  message   String?
+  details   String   @default("{}") // JSON object of type-specific fields
+  status    String   @default("NEW") // NEW | CONTACTED | CLOSED
+  vehicleId String?
+  vehicle   Vehicle? @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+
+  @@index([status, createdAt])
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Setting {
+  key   String @id
+  value String
+}
