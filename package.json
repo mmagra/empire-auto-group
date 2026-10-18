@@ -1,0 +1,49 @@
+{
+  "name": "empire-auto-group",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "prisma generate && next dev",
+    "postinstall": "prisma generate",
+    "build": "prisma generate && next build --webpack",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "db:sql": "node scripts/gen-schema-sql.mjs",
+    "db:studio": "prisma studio",
+    "seed": "tsx scripts/seed.ts",
+    "admin:create": "tsx scripts/create-admin.ts",
+    "brand": "node scripts/brand-assets.mjs",
+    "deploy:zip": "node scripts/make-deploy.mjs"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "bcryptjs": "^3.0.3",
+    "jose": "^6.2.12",
+    "lucide-react": "^1.59.0",
+    "next": "16.4.2",
+    "nodemailer": "^10.1.2",
+    "prisma": "^6.19.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "server-only": "^0.0.1",
+    "sharp": "^0.35.5",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^22.10.5",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "archiver": "^8.0.0",
+    "eslint": "^9.39.0",
+    "eslint-config-next": "16.4.2",
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=20.9"
+  }
+}
