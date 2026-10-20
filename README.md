@@ -60,4 +60,3 @@ The home page keeps its Financing Paperwork and Trade-In sections; their buttons
 npm run lint && npm run typecheck && npm run build
 ```
 
-Deploying: see [DEPLOY-HOSTINGER.md](DEPLOY-HOSTINGER.md).
