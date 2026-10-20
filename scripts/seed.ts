@@ -1,8 +1,8 @@
 // Seeds demo data for local development and client previews.
 //
 //   npm run seed            -> creates a first admin if none exists + demo vehicles
+//                              (fixed test password below; for previews only, never the real site)
 //   npm run seed -- --clear -> removes the demo vehicles (stock numbers starting DEMO-)
-import { randomBytes } from "node:crypto";
 import bcrypt from "bcryptjs";
 // Uses the app's own client so the data folder and tables are set up the same way.
 import { db } from "../src/lib/db";
@@ -33,7 +33,9 @@ async function main() {
 
   if ((await db.adminUser.count()) === 0) {
     const email = "admin@empireautogroupllc.com";
-    const password = randomBytes(9).toString("base64url");
+    // Easy, fixed test password so the Render preview login survives restarts.
+    // Change before going live: the real site uses the first-run setup screen instead.
+    const password = "Empire@1234";
     await db.adminUser.create({ data: { email, name: "Empire Admin", passwordHash: await bcrypt.hash(password, 12) } });
     console.log(`\nCreated admin  ${email}`);
     console.log(`Password       ${password}\n`);
